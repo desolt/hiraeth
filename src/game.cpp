@@ -39,7 +39,7 @@ void game::loop()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	gl::shader_program prog("res/shaders/vertex.glsl", "res/shaders/vertex.glsl");
+	gl::shader_program prog("res/shaders/vertex.glsl", "res/shaders/fragment.glsl");
 
 	while (!m_window_ptr->should_quit()) {
 		m_window_ptr->update();

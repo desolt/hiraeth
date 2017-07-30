@@ -14,8 +14,8 @@ shader_program::shader_program(const std::string &vert_path,
 	GLuint vert_shader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
-	compile_shader(vert_shader, "res/shaders/vertex.glsl");
-	compile_shader(frag_shader, "res/shaders/fragment.glsl");
+	compile_shader(vert_shader, vert_path);
+	compile_shader(frag_shader, frag_path);
 
 	m_id = glCreateProgram();
 	glAttachShader(m_id, vert_shader);
