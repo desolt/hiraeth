@@ -15,7 +15,16 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(Boost REQUIRED)
 
-include_directories(include ${SDL2_INCLUDE_DIRS} ${BOOST_INCLUDE_DIRS})
+include_directories(
+	include 
+	${SDL2_INCLUDE_DIRS} 
+	${BOOST_INCLUDE_DIRS} 
+)
 
 add_executable(${CMAKE_PROJECT_NAME} ${SRCS} src/glad.c)
-target_link_libraries(${CMAKE_PROJECT_NAME} ${OPENGL_LIBRARIES} ${SDL2_LIBRARIES} ${BOOST_LIBRARIES})
+target_link_libraries(
+	${CMAKE_PROJECT_NAME} 
+	${OPENGL_LIBRARIES} 
+	${SDL2_LIBRARIES} 
+	${BOOST_LIBRARIES} 
+)

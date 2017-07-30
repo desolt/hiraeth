@@ -1,13 +1,14 @@
 #include "gl/texture.hpp"
 #include <stdexcept>
-#include <SOIL/SOIL.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 namespace gl {
 
 texture::texture(const std::string &path) : m_id(0), m_width(0), m_height(0)
 {
 	int channels;
-	unsigned char *img = SOIL_load_image(path.c_str(), &m_width, &m_height, &channels, SOIL_LOAD_L);
+	unsigned char *img = stbi_load(path.c_str(), &m_width, &m_height, &channels, 0);
 	if (img == nullptr) {
 		throw std::runtime_error("gl: could not find texture path");
 	}
@@ -22,7 +23,7 @@ texture::texture(const std::string &path) : m_id(0), m_width(0), m_height(0)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, img);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	SOIL_free_image_data(img);
+	stbi_image_free(img);
 }
 
 void texture::bind()
