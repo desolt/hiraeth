@@ -1,5 +1,4 @@
 #include "engine/window.hpp"
-#include <stdexcept>
 
 namespace hiraeth::engine {
 
@@ -15,11 +14,27 @@ namespace hiraeth::engine {
         if (m_handle == nullptr)
             throw std::runtime_error("engine::window: could not create the window.");
         glfwMakeContextCurrent(m_handle);
+
+        gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+        glViewport(0, 0, width, height);
+
+        glfwSetWindowUserPointer(m_handle, this);
+        glfwSetWindowSizeCallback(m_handle, size_callback);
     }
 
     window::~window()
     {
         glfwDestroyWindow(m_handle);
+    }
+
+    int window::get_width() const noexcept
+    {
+        return m_width;
+    }
+
+    int window::get_height() const noexcept
+    {
+        return m_height;
     }
 
     bool window::should_close() const noexcept
@@ -31,6 +46,23 @@ namespace hiraeth::engine {
     {
         glfwPollEvents();
         glfwSwapBuffers(m_handle);
+    }
+
+    void window::on_resize(const boost::function<void(int, int)> &func)
+    {
+        m_resize_sig.connect(func);
+    }
+
+    void window::size_callback(GLFWwindow *handle, int width, int height)
+    {
+        window *win = reinterpret_cast<window *>(glfwGetWindowUserPointer(handle));
+
+        win->m_width = width;
+        win->m_height = height;
+
+        glViewport(0, 0, width, height);
+
+        win->m_resize_sig(width, height);
     }
 
 } // namespace hiraeth::engine
