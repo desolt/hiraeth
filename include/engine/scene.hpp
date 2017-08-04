@@ -16,7 +16,7 @@ namespace hiraeth::engine {
 
     struct prop {
         glm::vec2 pos;
-        glm::vec2 sprite;
+        glm::vec4 sprite;
 
         prop_type type;
     };

@@ -14,12 +14,12 @@ namespace hiraeth::engine {
 
     class sprite_renderer {
     public:
-        sprite_renderer(const std::string &sprite_sheet_path, const glm::vec2 &tile_dimensions, window &win);
+        sprite_renderer(const std::string &sprite_sheet_path, window &win);
         ~sprite_renderer();
 
         void set_camera(std::shared_ptr<camera> camera);
 
-        void draw_sprite(const glm::vec3 &pos, const glm::vec2 &tile);
+        void draw_sprite(const glm::vec3 &pos, const glm::vec4 &tile);
         void render();
 
     private:
@@ -29,7 +29,6 @@ namespace hiraeth::engine {
 
         gl::shader_program m_program;
         gl::texture m_texture;
-        glm::vec2 m_tile_dimensions;
 
         glm::mat4 m_projection;
         std::shared_ptr<camera> m_camera_ptr;

@@ -3,10 +3,9 @@
 
 namespace hiraeth::engine {
 
-    sprite_renderer::sprite_renderer(const std::string &sprite_sheet_path, const glm::vec2 &tile_dimensions, window &win)
+    sprite_renderer::sprite_renderer(const std::string &sprite_sheet_path, window &win)
             : m_program("/home/shawn/projects/hiraeth/res/shaders/vertex.glsl", "/home/shawn/projects/hiraeth/res/shaders/fragment.glsl"), // TODO: Get from some sort of manager that finds path.
-              m_texture(sprite_sheet_path),
-              m_tile_dimensions(tile_dimensions)
+              m_texture(sprite_sheet_path)
     {
         // matrix setup
         auto set_projection = [this](int width, int height) {
@@ -42,20 +41,20 @@ namespace hiraeth::engine {
         m_camera_ptr = camera;
     }
 
-    void sprite_renderer::draw_sprite(const glm::vec3 &pos, const glm::vec2 &tile)
+    void sprite_renderer::draw_sprite(const glm::vec3 &pos, const glm::vec4 &tile)
     {
         // TODO: Ignore sprites that aren't visible.
 
         float x1 = pos.x;
         float y1 = pos.y;
-        float x2 = pos.x + m_tile_dimensions.x;
-        float y2 = pos.y + m_tile_dimensions.y;
+        float x2 = pos.x + tile.z;
+        float y2 = pos.y + tile.w;
         float z = pos.z;
 
-        float s1 = (tile.x * m_tile_dimensions.x) / m_texture.get_width();
-        float t1 = (tile.y * m_tile_dimensions.y) / m_texture.get_height();
-        float s2 = ((tile.x * m_tile_dimensions.x) + m_tile_dimensions.x) / m_texture.get_width();
-        float t2 = ((tile.y * m_tile_dimensions.y) + m_tile_dimensions.y) / m_texture.get_height();
+        float s1 = tile.x / m_texture.get_width();
+        float t1 = tile.y / m_texture.get_height();
+        float s2 = (tile.x + tile.z) / m_texture.get_width();
+        float t2 = (tile.y + tile.w) / m_texture.get_height();
 
         m_vertices.insert(m_vertices.end(), { x1, y1, z, s1, t1 });
         m_vertices.insert(m_vertices.end(), { x2, y1, z, s2, t1 });
