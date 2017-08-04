@@ -19,6 +19,7 @@ namespace hiraeth::engine {
         glViewport(0, 0, width, height);
 
         glfwSetWindowUserPointer(m_handle, this);
+        glfwSetKeyCallback(m_handle, key_callback);
         glfwSetWindowSizeCallback(m_handle, size_callback);
     }
 
@@ -48,9 +49,20 @@ namespace hiraeth::engine {
         glfwSwapBuffers(m_handle);
     }
 
+    void window::on_key(const boost::function<void(int, int, int, int)> &func)
+    {
+        m_key_sig.connect(func);
+    }
+
     void window::on_resize(const boost::function<void(int, int)> &func)
     {
         m_resize_sig.connect(func);
+    }
+
+    void window::key_callback(GLFWwindow *handle, int key, int scancode, int action, int mods)
+    {
+        window *win = reinterpret_cast<window *>(glfwGetWindowUserPointer(handle));
+        win->m_key_sig(key, scancode, action, mods);
     }
 
     void window::size_callback(GLFWwindow *handle, int width, int height)

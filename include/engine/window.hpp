@@ -20,6 +20,7 @@ namespace hiraeth::engine {
         void update();
 
         // signal callbacks
+        void on_key(const boost::function<void (int, int, int, int)> &func);
         void on_resize(const boost::function<void (int, int)> &func);
 
     private:
@@ -28,9 +29,11 @@ namespace hiraeth::engine {
         std::string m_title;
         int m_width, m_height;
 
+        boost::signals2::signal<void (int, int, int, int)> m_key_sig;
         boost::signals2::signal<void (int, int)> m_resize_sig;
 
-        static void size_callback(GLFWwindow *win, int width, int height);
+        static void key_callback(GLFWwindow *handle, int key, int scancode, int action, int mods);
+        static void size_callback(GLFWwindow *handle, int width, int height);
     };
 
 } // namespace hiraeth::engine

@@ -1,7 +1,8 @@
 #include "game.hpp"
 #include <iostream>
 
-int main() {
+int main()
+{
     hiraeth::game &game = hiraeth::game::instance();
     try {
         game.loop();

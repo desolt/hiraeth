@@ -37,8 +37,15 @@ namespace hiraeth::engine {
         glDeleteVertexArrays(1, &m_vao);
     }
 
+    void sprite_renderer::set_camera(std::shared_ptr<camera> camera)
+    {
+        m_camera_ptr = camera;
+    }
+
     void sprite_renderer::draw_sprite(const glm::vec3 &pos, const glm::vec2 &tile)
     {
+        // TODO: Ignore sprites that aren't visible.
+
         float x1 = pos.x;
         float y1 = pos.y;
         float x2 = pos.x + m_tile_dimensions.x;
@@ -67,6 +74,10 @@ namespace hiraeth::engine {
     {
         m_program.use();
         m_program.set_mat4("projection", m_projection);
+        if (m_camera_ptr != nullptr)
+            m_program.set_mat4("view", m_camera_ptr->view_matrix());
+        else
+            m_program.set_mat4("view", glm::mat4());
         m_texture.bind();
         glBindVertexArray(m_vao);
             glDrawArrays(GL_TRIANGLES, 0, m_vertex_count);

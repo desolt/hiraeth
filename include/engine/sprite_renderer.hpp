@@ -1,9 +1,11 @@
 #ifndef HIRAETH_ENGINE_SPRITE_RENDERER_HPP
 #define HIRAETH_ENGINE_SPRITE_RENDERER_HPP
 
+#include "engine/camera.hpp"
 #include "engine/window.hpp"
 #include "gl/shader_program.hpp"
 #include "gl/texture.hpp"
+#include <memory>
 #include <string>
 #include <vector>
 #include <glm/glm.hpp>
@@ -14,6 +16,8 @@ namespace hiraeth::engine {
     public:
         sprite_renderer(const std::string &sprite_sheet_path, const glm::vec2 &tile_dimensions, window &win);
         ~sprite_renderer();
+
+        void set_camera(std::shared_ptr<camera> camera);
 
         void draw_sprite(const glm::vec3 &pos, const glm::vec2 &tile);
         void render();
@@ -28,6 +32,9 @@ namespace hiraeth::engine {
         glm::vec2 m_tile_dimensions;
 
         glm::mat4 m_projection;
+        std::shared_ptr<camera> m_camera_ptr;
+
+        int m_screen_width = 0, m_screen_height = 0;
 
         glm::vec2 get_tile_pos(std::size_t tile) const;
     };
